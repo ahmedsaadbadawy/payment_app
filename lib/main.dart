@@ -16,3 +16,7 @@ class CheckoutApp extends StatelessWidget {
     );
   }
 }
+
+// paymentIntentObject create payment intent (anount , currancy)
+// init paymen sheet (paymenIntentClientSecret)
+// presentPaymenSheet()
