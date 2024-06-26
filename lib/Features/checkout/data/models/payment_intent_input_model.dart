@@ -1,5 +1,5 @@
 class PaymentIntentInputModel {
-  final String amount;
+  final num amount;
   final String currency;
 
   PaymentIntentInputModel({
@@ -9,8 +9,8 @@ class PaymentIntentInputModel {
 
   toJson() {
     return {
-      'amount': amount,
+      'amount': (amount.toInt() * 100).toString(),
       'currency': currency,
-    }; // cause we will use it as Body (map) in Post Request. 
+    }; // cause we will use it as Body (map) in Post Request.
   }
 }
