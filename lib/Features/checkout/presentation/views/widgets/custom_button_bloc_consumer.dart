@@ -30,11 +30,13 @@ class CustomButtonBlocConsumer extends StatelessWidget {
       builder: (context, state) {
         return CustomButton(
             onTap: () {
-
-              // we should create customer model for the post request 
+              // we should create customer model for the post request
               // to get customer data (Id) in login stage ( just like the PaymentIntentModel ) .
               PaymentIntentInputModel paymentIntentInputModel =
-                  PaymentIntentInputModel(amount: 95.62, currency: 'USD' , customerId: 'cus_QNeER26GRIDrAR');
+                  PaymentIntentInputModel(
+                      amount: 95.62,
+                      currency: 'USD',
+                      customerId: 'cus_QNeER26GRIDrAR');
 
               BlocProvider.of<PaymentCubit>(context).makePayment(
                   paymentIntentInputModel: paymentIntentInputModel);

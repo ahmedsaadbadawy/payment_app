@@ -6,7 +6,7 @@ class PaymentIntentInputModel {
   PaymentIntentInputModel({
     required this.amount,
     required this.currency,
-    required this.customerId, 
+    required this.customerId,
   });
 
   toJson() {

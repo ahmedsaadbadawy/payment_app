@@ -56,7 +56,7 @@ class MyCartViewBody extends StatelessWidget {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               //   return const PaymentDetailsView();
               // }));
-                  
+
               showModalBottomSheet(
                   context: context,
                   shape: RoundedRectangleBorder(

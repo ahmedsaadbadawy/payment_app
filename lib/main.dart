@@ -5,7 +5,7 @@ import 'package:payment_app/core/utils/api_keys.dart';
 
 void main() {
   Stripe.publishableKey = ApiKeys.puplishableKey;
-  
+
   runApp(const CheckoutApp());
 }
 
@@ -28,6 +28,6 @@ class CheckoutApp extends StatelessWidget {
 
 // Save card data flow :
 // paymentIntentModel create payment intent (anount , currancy , customerId)
-// keySecret createEphemaralKey(stripeVersion , customerId)
+// keySecret createEphemaralKey(stripeVersion , customerId) & we create it every time
 // init paymen sheet (merchantDisplayName , paymenIntentClientSecret , ephemaralKeySecret)
 // presentPaymenSheet()

@@ -4,6 +4,6 @@ import 'package:payment_app/Features/checkout/data/models/payment_intent_input_m
 import '../../../../core/errors/failures.dart';
 
 abstract class CheckoutRepo {
-  Future<Either<Failure, void>> makePayment({required PaymentIntentInputModel paymentIntentInputModel});
+  Future<Either<Failure, void>> makePayment(
+      {required PaymentIntentInputModel paymentIntentInputModel});
 }
-
