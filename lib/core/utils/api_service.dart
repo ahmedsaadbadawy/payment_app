@@ -8,15 +8,14 @@ class ApiService {
     required String url,
     required String token,
     String? contentType,
+    Map<String, String>? headers,
   }) async {
     var response = await dio.post(
       url,
       data: body,
       options: Options(
         contentType: Headers.formUrlEncodedContentType,
-        headers: {
-          'Authorization': "Bearer $token",
-        },
+        headers: headers ?? {'Authorization': "Bearer $token"},
       ),
     );
 

@@ -28,6 +28,6 @@ class CheckoutApp extends StatelessWidget {
 
 // Save card data flow :
 // paymentIntentModel create payment intent (anount , currancy , customerId)
-// keySecret createEphemaralKey(stripeVersion , customerId) & we create it every time
+// keySecret createEphemaralKey( customerId ) & we create it every time
 // init paymen sheet (merchantDisplayName , paymenIntentClientSecret , ephemaralKeySecret)
 // presentPaymenSheet()
