@@ -45,8 +45,9 @@ class StripeService {
   Future makePayment(
       {required PaymentIntentInputModel paymentIntentInputModel}) async {
     var paymentIntentModel = await createPaymentIntent(paymentIntentInputModel);
-    
-    var ephemeralKeyModel = await createEphemeralKey(customerId: paymentIntentInputModel.customerId);
+
+    var ephemeralKeyModel = await createEphemeralKey(
+        customerId: paymentIntentInputModel.customerId);
 
     var initPaymentSheetInputModel = InitPaymentSheetInputModel(
       clientSecret: paymentIntentModel.clientSecret!,
@@ -67,7 +68,7 @@ class StripeService {
           'customer': customerId,
         },
         contentType: Headers.formUrlEncodedContentType,
-        url: 'https://api.stripe.com/v1/payment_intents',
+        url: 'https://api.stripe.com/v1/ephemeral_keys',
         token: ApiKeys.secretKey,
         headers: {
           'Authorization': 'Bearer ${ApiKeys.secretKey}',
