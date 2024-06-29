@@ -21,7 +21,13 @@ class CheckoutApp extends StatelessWidget {
   }
 }
 
-// Payment Flow By Stripe :
-// paymentIntentObject create payment intent (anount , currancy)
+// Save card data flow :
+// paymentIntentModel create payment intent (anount , currancy)
 // init paymen sheet (paymenIntentClientSecret)
+// presentPaymenSheet()
+
+// Save card data flow :
+// paymentIntentModel create payment intent (anount , currancy , customerId)
+// keySecret createEphemaralKey(stripeVersion , customerId)
+// init paymen sheet (merchantDisplayName , paymenIntentClientSecret , ephemaralKeySecret)
 // presentPaymenSheet()
