@@ -7,6 +7,7 @@ import 'package:payment_app/core/utils/api_keys.dart';
 import 'package:payment_app/core/utils/api_service.dart';
 
 import '../../Features/checkout/data/models/init_payment_sheet_input_model.dart';
+import '../../Features/checkout/data/models/stripe_customer_data_model/stripe_customer_data_model.dart';
 
 class StripeService {
   final ApiService apiService = ApiService();
@@ -59,6 +60,22 @@ class StripeService {
         initPaymentSheetInputModel: initPaymentSheetInputModel);
 
     await displayPaymentSheet();
+  }
+
+  Future<StripeCustomerDataModel> createStripeCustomerId(
+      {required String name}) async {
+    var response = await apiService.post(
+      body: {
+        'name': name,
+      },
+      contentType: Headers.formUrlEncodedContentType,
+      url: 'https://api.stripe.com/v1/customers',
+      token: ApiKeys.secretKey,
+    );
+
+    var customerDataModel = StripeCustomerDataModel.fromJson(response.data);
+
+    return customerDataModel;
   }
 
   Future<EphemeralKeyModel> createEphemeralKey(

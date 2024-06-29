@@ -5,10 +5,13 @@ import 'package:meta/meta.dart';
 import 'package:payment_app/Features/checkout/data/models/payment_intent_input_model.dart';
 import 'package:payment_app/Features/checkout/data/repos/checkout_repo.dart';
 
+import '../../../../../core/utils/api_keys.dart';
+import '../../../data/repos/customer_repo.dart';
+
 part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
-  PaymentCubit(this.checkoutRepo) : super(PaymentInitial());
+  PaymentCubit(this.checkoutRepo, this.customerRepo) : super(PaymentInitial());
   final CheckoutRepo checkoutRepo;
 
   Future makePayment(
@@ -30,5 +33,17 @@ class PaymentCubit extends Cubit<PaymentState> {
   void onChange(Change<PaymentState> change) {
     log(change.toString());
     super.onChange(change);
+  }
+
+  final CustomerRepo customerRepo;
+  Future createStripeCustomerId({required String name}) async {
+    var data = await customerRepo.createStripeCustomerId(name: name);
+
+    data.fold((l) => emit(CreateCustomerIdFailure(l.errMessage)),
+        (stripeCustomerDataModel) {
+      ApiKeys.stripeCustomerId = stripeCustomerDataModel.id!;
+      log(ApiKeys.stripeCustomerId);
+      emit(CreateCustomerIdSuccess());
+    });
   }
 }

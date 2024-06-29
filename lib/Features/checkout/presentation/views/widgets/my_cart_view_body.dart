@@ -1,4 +1,5 @@
 import 'package:payment_app/Features/checkout/data/repos/checkout_repo_impl.dart';
+import 'package:payment_app/Features/checkout/data/repos/customer_repo_impl.dart';
 import 'package:payment_app/Features/checkout/presentation/manager/cubit/payment_cubit.dart';
 import 'package:payment_app/Features/checkout/presentation/views/widgets/cart_info_item.dart';
 import 'package:payment_app/Features/checkout/presentation/views/widgets/total_price_widget.dart';
@@ -63,7 +64,7 @@ class MyCartViewBody extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16)),
                   builder: (context) {
                     return BlocProvider(
-                      create: (context) => PaymentCubit(CheckoutRepoImpl()),
+                      create: (context) => PaymentCubit(CheckoutRepoImpl(),CustomerRepoImpl()),
                       child: const PaymentMethodsBottomSheet(),
                     );
                   });

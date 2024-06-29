@@ -4,6 +4,7 @@ import 'package:payment_app/Features/checkout/data/models/payment_intent_input_m
 import 'package:payment_app/Features/checkout/presentation/manager/cubit/payment_cubit.dart';
 import 'package:payment_app/Features/checkout/presentation/views/thank_you_view.dart';
 
+import '../../../../../core/utils/api_keys.dart';
 import '../../../../../core/widgets/custom_button.dart';
 
 class CustomButtonBlocConsumer extends StatelessWidget {
@@ -30,13 +31,15 @@ class CustomButtonBlocConsumer extends StatelessWidget {
       builder: (context, state) {
         return CustomButton(
             onTap: () {
-              // we should create customer model for the post request
-              // to get customer data (Id) in login stage ( just like the PaymentIntentModel ) .
+              // ⚠️ we should trigger it once ( at login stage ) ⚠️.
+              BlocProvider.of<PaymentCubit>(context)
+                  .createStripeCustomerId(name: 'Mohamed');
+
               PaymentIntentInputModel paymentIntentInputModel =
                   PaymentIntentInputModel(
                       amount: 95.62,
                       currency: 'USD',
-                      customerId: 'cus_QNeER26GRIDrAR');
+                      customerId: ApiKeys.stripeCustomerId);
 
               BlocProvider.of<PaymentCubit>(context).makePayment(
                   paymentIntentInputModel: paymentIntentInputModel);

@@ -13,3 +13,10 @@ final class PaymentFailure extends PaymentState {
   final String errMessage;
   PaymentFailure(this.errMessage);
 }
+
+final class CreateCustomerIdSuccess extends PaymentState {}
+
+final class CreateCustomerIdFailure extends PaymentState {
+  final String errMessage;
+  CreateCustomerIdFailure(this.errMessage);
+}
