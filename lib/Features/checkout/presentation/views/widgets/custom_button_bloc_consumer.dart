@@ -48,81 +48,77 @@ class CustomButtonBlocConsumer extends StatelessWidget {
 
               // BlocProvider.of<PaymentCubit>(context).makePayment(
               //     paymentIntentInputModel: paymentIntentInputModel);
-              var amount = PaypalAmountModel(
-                total: "100",
-                currency: 'USD',
-                details: Details(
-                  subtotal: "100",
-                  shipping: "0",
-                  shippingDiscount: 0,
-                ),
-              );
 
-              List<OrderItemModel> orders = [
-                OrderItemModel(
-                  name: 'Apple',
-                  price: "4",
-                  quantity: 10,
-                  currency: 'USD',
-                ),
-                OrderItemModel(
-                  name: 'Apple',
-                  price: "5",
-                  quantity: 12,
-                  currency: 'USD',
-                ),
-              ];
-
-              var paypalItemList = PaypalItemListModel(orders: orders);
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => PaypalCheckoutView(
-                  sandboxMode: true,
-                  clientId: "YOUR CLIENT ID",
-                  secretKey: "YOUR SECRET KEY",
-                  transactions: [
-                    {
-                      "amount": amount.toJson(),
-                      "description": "The payment transaction description.",
-                      // "payment_options": {
-                      //   "allowed_payment_method":
-                      //       "INSTANT_FUNDING_SOURCE"
-                      // },
-                      "item_list": {
-                        "items": paypalItemList.toJson(),
-
-                        // Optional
-                        //   "shipping_address": {
-                        //     "recipient_name": "Tharwat samy",
-                        //     "line1": "tharwat",
-                        //     "line2": "",
-                        //     "city": "tharwat",
-                        //     "country_code": "EG",
-                        //     "postal_code": "25025",
-                        //     "phone": "+00000000",
-                        //     "state": "ALex"
-                        //  },
-                      }
-                    }
-                  ],
-                  note: "Contact us for any questions on your order.",
-                  onSuccess: (Map params) async {
-                    log("onSuccess: $params");
-                    Navigator.pop(context);
-                  },
-                  onError: (error) {
-                    log("onError: $error");
-                    Navigator.pop(context);
-                  },
-                  onCancel: () {
-                    log('cancelled:');
-                    Navigator.pop(context);
-                  },
-                ),
-              ));
+              var transctionsData = getTransctionsData();
+              executePaypalPayment(context, transctionsData);
             },
             isLoading: state is PaymentLoading ? true : false,
             text: 'Continue');
       },
     );
+  }
+
+  ({PaypalAmountModel amount, PaypalItemListModel paypalItemList})
+      getTransctionsData() {
+    var amount = PaypalAmountModel(
+      total: "100",
+      currency: 'USD',
+      details: Details(
+        subtotal: "100",
+        shipping: "0",
+        shippingDiscount: 0,
+      ),
+    );
+
+    List<OrderItemModel> orders = [
+      OrderItemModel(
+        name: 'Apple',
+        price: "4",
+        quantity: 10,
+        currency: 'USD',
+      ),
+      OrderItemModel(
+        name: 'Apple',
+        price: "5",
+        quantity: 12,
+        currency: 'USD',
+      ),
+    ];
+
+    var paypalItemList = PaypalItemListModel(orders: orders);
+
+    return (amount: amount, paypalItemList: paypalItemList); // Record.
+  }
+
+  void executePaypalPayment(BuildContext context, ({PaypalAmountModel amount, PaypalItemListModel paypalItemList}) transctionsData) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context) => PaypalCheckoutView(
+        sandboxMode: true,
+        clientId: "YOUR CLIENT ID",
+        secretKey: "YOUR SECRET KEY",
+        transactions: [
+          {
+            "amount": transctionsData.amount.toJson(),
+            "description": "The payment transaction description.",
+            "item_list": {
+              "items": transctionsData.paypalItemList.toJson(),
+            }
+          }
+        ],
+        note: "Contact us for any questions on your order.",
+        onSuccess: (Map params) async {
+          log("onSuccess: $params");
+          Navigator.pop(context);
+        },
+        onError: (error) {
+          log("onError: $error");
+          Navigator.pop(context);
+        },
+        onCancel: () {
+          log('cancelled:');
+          Navigator.pop(context);
+        },
+      ),
+    ));
   }
 }
