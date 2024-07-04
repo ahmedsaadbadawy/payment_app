@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
-import 'package:payment_app/Features/checkout/data/models/payment_intent_input_model.dart';
+import 'package:payment_app/Features/checkout/data/models/paypal_amount_model/amount_model.dart';
+import 'package:payment_app/Features/checkout/data/models/paypal_amount_model/details.dart';
+import 'package:payment_app/Features/checkout/data/models/paypal_item_list_model/order_item_model.dart';
+import 'package:payment_app/Features/checkout/data/models/paypal_item_list_model/paypal_item_list_model.dart';
 import 'package:payment_app/Features/checkout/presentation/manager/cubit/payment_cubit.dart';
 import 'package:payment_app/Features/checkout/presentation/views/thank_you_view.dart';
 
@@ -45,43 +48,47 @@ class CustomButtonBlocConsumer extends StatelessWidget {
 
               // BlocProvider.of<PaymentCubit>(context).makePayment(
               //     paymentIntentInputModel: paymentIntentInputModel);
+              var amount = PaypalAmountModel(
+                total: "100",
+                currency: 'USD',
+                details: Details(
+                  subtotal: "100",
+                  shipping: "0",
+                  shippingDiscount: 0,
+                ),
+              );
 
+              List<OrderItemModel> orders = [
+                OrderItemModel(
+                  name: 'Apple',
+                  price: "4",
+                  quantity: 10,
+                  currency: 'USD',
+                ),
+                OrderItemModel(
+                  name: 'Apple',
+                  price: "5",
+                  quantity: 12,
+                  currency: 'USD',
+                ),
+              ];
+
+              var paypalItemList = PaypalItemListModel(orders: orders);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => PaypalCheckoutView(
                   sandboxMode: true,
                   clientId: "YOUR CLIENT ID",
                   secretKey: "YOUR SECRET KEY",
-                  transactions: const [
+                  transactions: [
                     {
-                      "amount": {
-                        "total": '100',
-                        "currency": "USD",
-                        "details": {
-                          "subtotal": '100',
-                          "shipping": '0',
-                          "shipping_discount": 0
-                        }
-                      },
+                      "amount": amount.toJson(),
                       "description": "The payment transaction description.",
                       // "payment_options": {
                       //   "allowed_payment_method":
                       //       "INSTANT_FUNDING_SOURCE"
                       // },
                       "item_list": {
-                        "items": [
-                          {
-                            "name": "Apple",
-                            "quantity": 4,
-                            "price": '10',
-                            "currency": "USD"
-                          },
-                          {
-                            "name": "Pineapple",
-                            "quantity": 5,
-                            "price": '12',
-                            "currency": "USD"
-                          }
-                        ],
+                        "items": paypalItemList.toJson(),
 
                         // Optional
                         //   "shipping_address": {

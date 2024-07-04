@@ -1,9 +1,9 @@
 class Details {
-  String? subtotal;
-  String? shipping;
-  int? shippingDiscount;
+  final String? subtotal;
+  final String? shipping;
+  final int? shippingDiscount;
 
-  Details({this.subtotal, this.shipping, this.shippingDiscount});
+  Details({required this.subtotal,required this.shipping,required this.shippingDiscount});
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
         subtotal: json['subtotal'] as String?,

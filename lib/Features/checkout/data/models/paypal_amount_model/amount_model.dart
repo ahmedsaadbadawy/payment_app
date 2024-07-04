@@ -1,11 +1,11 @@
 import 'details.dart';
 
 class PaypalAmountModel {
-  String? total;
-  String? currency;
-  Details? details;
+  final String? total;
+  final String? currency;
+  final Details? details;
 
-  PaypalAmountModel({this.total, this.currency, this.details});
+  PaypalAmountModel({required this.total,required this.currency,required this.details});
 
   factory PaypalAmountModel.fromJson(Map<String, dynamic> json) =>
       PaypalAmountModel(
