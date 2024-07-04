@@ -9,6 +9,7 @@ import 'package:payment_app/Features/checkout/data/models/paypal_item_list_model
 import 'package:payment_app/Features/checkout/data/models/paypal_item_list_model/paypal_item_list_model.dart';
 import 'package:payment_app/Features/checkout/presentation/manager/cubit/payment_cubit.dart';
 import 'package:payment_app/Features/checkout/presentation/views/thank_you_view.dart';
+import 'package:payment_app/core/utils/api_keys.dart';
 
 import '../../../../../core/widgets/custom_button.dart';
 
@@ -90,18 +91,25 @@ class CustomButtonBlocConsumer extends StatelessWidget {
     return (amount: amount, paypalItemList: paypalItemList); // Record.
   }
 
-  void executePaypalPayment(BuildContext context, ({PaypalAmountModel amount, PaypalItemListModel paypalItemList}) transctionsData) {
+  void executePaypalPayment(
+      BuildContext context,
+      ({
+        PaypalAmountModel amount,
+        PaypalItemListModel paypalItemList
+      }) transctionsData) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) => PaypalCheckoutView(
         sandboxMode: true,
-        clientId: "YOUR CLIENT ID",
-        secretKey: "YOUR SECRET KEY",
+        clientId: ApiKeys.paypalClientId,
+        secretKey: ApiKeys.paypalSecretKey,
         transactions: [
           {
             "amount": transctionsData.amount.toJson(),
             "description": "The payment transaction description.",
             "item_list": {
-              "items": transctionsData.paypalItemList.toJson(),
+              "items": transctionsData.paypalItemList.orders!
+                  .map((order) => order.toJson())
+                  .toList(),
             }
           }
         ],
