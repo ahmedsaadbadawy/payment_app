@@ -20,3 +20,8 @@ final class CreateCustomerIdFailure extends PaymentState {
   final String errMessage;
   CreateCustomerIdFailure(this.errMessage);
 }
+
+final class PaymentMethodSelected extends PaymentState { 
+  final int selectedIndex;
+  PaymentMethodSelected(this.selectedIndex);
+}

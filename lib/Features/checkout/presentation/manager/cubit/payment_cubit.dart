@@ -13,6 +13,9 @@ part 'payment_state.dart';
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit(this.checkoutRepo, this.customerRepo) : super(PaymentInitial());
   final CheckoutRepo checkoutRepo;
+  final CustomerRepo customerRepo;
+
+  int selectedPaymentMethodIndex = 0;
 
   Future makePayment(
       {required PaymentIntentInputModel paymentIntentInputModel}) async {
@@ -29,13 +32,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     );
   }
 
-  @override
-  void onChange(Change<PaymentState> change) {
-    log(change.toString());
-    super.onChange(change);
-  }
-
-  final CustomerRepo customerRepo;
+  
   Future createStripeCustomerId({required String name}) async {
     var data = await customerRepo.createStripeCustomerId(name: name);
 
@@ -45,5 +42,16 @@ class PaymentCubit extends Cubit<PaymentState> {
       log(ApiKeys.stripeCustomerId);
       emit(CreateCustomerIdSuccess());
     });
+  }
+
+  void selectPaymentMethod(int index) {
+    selectedPaymentMethodIndex = index;
+    emit(PaymentMethodSelected(index)); // Add this line
+  }
+
+   @override
+  void onChange(Change<PaymentState> change) {
+    log(change.toString());
+    super.onChange(change);
   }
 }

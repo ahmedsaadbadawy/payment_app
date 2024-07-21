@@ -12,6 +12,7 @@ import 'package:payment_app/Features/checkout/presentation/views/thank_you_view.
 import 'package:payment_app/core/utils/api_keys.dart';
 
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../data/models/payment_intent_input_model.dart';
 
 class CustomButtonBlocConsumer extends StatelessWidget {
   const CustomButtonBlocConsumer({
@@ -35,23 +36,25 @@ class CustomButtonBlocConsumer extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        var cubit = context.read<PaymentCubit>();
         return CustomButton(
             onTap: () {
-              // ⚠️ we should trigger it once ( at login stage ) ⚠️.
-              // BlocProvider.of<PaymentCubit>(context)
-              //     .createStripeCustomerId(name: 'Mohamed');
+              if (cubit.selectedPaymentMethodIndex == 0) {
+                // ⚠️ we should trigger it once ( at login stage ) ⚠️.
+                cubit.createStripeCustomerId(name: 'Mohamed');
 
-              // PaymentIntentInputModel paymentIntentInputModel =
-              //     PaymentIntentInputModel(
-              //         amount: 95.62,
-              //         currency: 'USD',
-              //         customerId: 'cus_QNjl3tqxObowkq');
+                PaymentIntentInputModel paymentIntentInputModel =
+                    PaymentIntentInputModel(
+                        amount: 95.62,
+                        currency: 'USD',
+                        customerId: 'cus_QNjl3tqxObowkq');
 
-              // BlocProvider.of<PaymentCubit>(context).makePayment(
-              //     paymentIntentInputModel: paymentIntentInputModel);
-
-              var transctionsData = getTransctionsData();
-              executePaypalPayment(context, transctionsData);
+                cubit.makePayment(
+                    paymentIntentInputModel: paymentIntentInputModel);
+              } else if (cubit.selectedPaymentMethodIndex == 1) {
+                var transctionsData = getTransctionsData();
+                executePaypalPayment(context, transctionsData);
+              }
             },
             isLoading: state is PaymentLoading ? true : false,
             text: 'Continue');
